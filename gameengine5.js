@@ -29,7 +29,7 @@
     function initCanvas(){
         document.body.appendChild(chatConsole);
         chatConsole.innerHTML =  'CONTROLS >>  W/S: thrust on/off | A/D: rotate craft | SPACE: shoot';
-
+        // whatever
         paper = Raphael(0, 0, paperW, paperH);
         //console.log("canvas ready for game state updates");
 
