@@ -14,12 +14,14 @@ var handle = {};
 handle["/"] = requestHandlers.start;
 handle["/start"] = requestHandlers.start;
 handle["/upload"] = requestHandlers.upload;
-handle["/socket.io.js"] = requestHandlers.socketIOjs;
+//handle["/socket.io.js"] = requestHandlers.socketIOjs;
+handle["/socket.io/socket.io.js"] = requestHandlers.socketIOjs;
 handle["/gameengine5.js"] = requestHandlers.gameenginejs;
 handle["/raphael-min.js"] = requestHandlers.raphaeljs;
 handle["/ship01.png"] = requestHandlers.shipimg;
 handle["/Box2dWeb-2.1.a.3.min.js"] = requestHandlers.box2DWeb;
 //handle["/show"] = requestHandlers.show;
 
+//console.log('Version: ' + process.version);
 // start the server:
 server.start(router.route, handle);

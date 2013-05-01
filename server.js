@@ -2,9 +2,12 @@ var http = require("http");
 var url = require("url");
 var fs = require("fs");
 //var Box2D = require("./Box2dWeb-2.1.a.3.min.js");
-var io = require('socket.io');
+var io = require("socket.io");
 
-eval(fs.readFileSync('Box2dWeb-2.1.a.3.min.js') + '');
+//eval(fs.readFileSync("Box2dWeb-2.1.a.3.min.js") + '');
+//fs.readFileSync("Box2dWeb-2.1.a.3.min.js", "UTF-8");
+//var Box2D = require("./Box2dWeb-2.1.a.3.min.js");
+var Box2D = require('box2dweb-commonjs');
 
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
@@ -141,7 +144,7 @@ function start(route, handle) {
             // create ship:
             var initX = Math.round(Math.random() * paperW);
             var initY = Math.round(Math.random() * paperH);
-            var initR = Math.round(Math.random() * 360);
+            var initR = 1; //Math.round(Math.random() * 360);
             var density = 50;
             data.obj = createShip({'x': initX, 'y':initY, 'r': initR}, density, username);
             gameObjectsModel.items.push(data); // store reference to ship
@@ -172,13 +175,15 @@ function start(route, handle) {
 
         client.on('rotate left', function(){
             client.get('ship', function (err, ship) {
-                rotate(ship, -20);
+                //rotate(ship, -20);
+                rotate(ship, -100);
             });
         });
 
         client.on('rotate right', function(){
             client.get('ship', function (err, ship) {
-                rotate(ship, 20);
+                //rotate(ship, 20);
+                rotate(ship, 100);
             });
         });
 
@@ -209,6 +214,7 @@ function start(route, handle) {
 
     /* -- PHYSICS SIMULATION: -- */
     // Shorthand references to Box2D namespaces:
+    /*
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     var b2BodyDef = Box2D.Dynamics.b2BodyDef;
     var b2Body = Box2D.Dynamics.b2Body;
@@ -218,6 +224,17 @@ function start(route, handle) {
     var b2MassData = Box2D.Collision.Shapes.b2MassData;
     var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
     var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+    */
+    var b2Vec2 = Box2D.b2Vec2;
+    var b2BodyDef = Box2D.b2BodyDef;
+    var b2Body = Box2D.b2Body;
+    var b2FixtureDef = Box2D.b2FixtureDef;
+    var b2Fixture = Box2D.b2Fixture;
+    var b2World = Box2D.b2World;
+    var b2MassData = Box2D.b2MassData;
+    var b2PolygonShape = Box2D.b2PolygonShape;
+    var b2CircleShape = Box2D.b2CircleShape;
+    var b2ContactListener = Box2D.b2ContactListener;
     //
     // Physics engine environment:
     var scale = 30; // Pixels per meter. Scale. Box2D operates in meters: 1 meter = 30 pixels
@@ -234,7 +251,8 @@ function start(route, handle) {
 
     //
     // Collision detection handling:
-    var contactListener = new Box2D.Dynamics.b2ContactListener();
+    //var contactListener = new Box2D.Dynamics.b2ContactListener();
+    var contactListener = new b2ContactListener();
     contactListener.BeginContact = function(contact) {
         var body1 = contact.m_fixtureA.m_body;
         var body2 = contact.m_fixtureB.m_body;

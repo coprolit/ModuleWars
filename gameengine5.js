@@ -62,8 +62,9 @@
     var b2Body = Box2D.Dynamics.b2Body;
     var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
     var b2Fixture = Box2D.Dynamics.b2Fixture;
+    var b2WeldJointDef = Box2D.Dynamics.Joints.b2WeldJointDef;
     var b2World = Box2D.Dynamics.b2World;
-    var b2MassData = Box2D.Collision.Shapes.b2MassData;
+    //var b2MassData = Box2D.Collision.Shapes.b2MassData;
     var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
     var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
     var b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
@@ -129,6 +130,7 @@
                     for(var i = 0; i < items.length; i++){
                         var item = items[i].split("&");
                         var username = item[0];
+
                         if(gameObjectsModel[username]){
                             // update physics:
                             var posX = parseFloat(item[1]);
@@ -145,6 +147,7 @@
                             var newX = posX * scale;
                             var newY = posY * scale;
                             var newR = angle * 180 / Math.PI + 90;
+                            /*
                             if(gameObjectsModel[username].GetUserData().type === 'ship'){
                                 graphic.attr({
                                     x: newX - graphic.attr('width')/2,
@@ -158,7 +161,9 @@
                                 });
                             }
                             graphic.transform("R" + newR);
+                            */
                         }
+
                     }
                 });
             }
@@ -211,8 +216,9 @@
 /* -- GAME OBJECTS FACTORY: -- */
     function createShip(pos, density, username){
         //console.log('creating ship for ' + username);
-        var graphic = paper.image("ship01.png", pos.b2Vec2.x * scale - 14, pos.b2Vec2.y * scale - 21, 28, 42);
-        graphic.transform("R" + pos.angle * 180 / Math.PI);
+        //var graphic = paper.image("ship01.png", pos.b2Vec2.x * scale - 14, pos.b2Vec2.y * scale - 21, 28, 42);
+        //graphic.transform("R" + pos.angle * 180 / Math.PI);
+        var graphic;
 
         // 'Mass' = Shape size * density value
         var bodyDef = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
@@ -238,6 +244,41 @@
         var ship = b2world.CreateBody(bodyDef);
         ship.CreateFixture(fixDef);
         ship.SetLinearDamping(.7); // Damping works like friction or anti-force: reduces linear velocity.
+
+        // test weld joints
+        //var modulegraphic = paper.image("ship01.png", pos.b2Vec2.x * scale - 14 + 50, pos.b2Vec2.y * scale - 21, 28, 42);
+        //modulegraphic.transform("R" + pos.angle * 180 / Math.PI);
+        var bodyDef2 = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
+        bodyDef2.type = b2Body.b2_dynamicBody; //define object type
+        if(pos.b2Vec2 && pos.angle) {
+            bodyDef2.position.Set(pos.b2Vec2.x + 1.5, pos.b2Vec2.y); // Define position in meters.
+            bodyDef2.angle = pos.angle; // define rotation in radians.
+        }
+        bodyDef2.angularDamping = bodyDef.angularDamping;
+
+        var testmodule = b2world.CreateBody(bodyDef2);
+        testmodule.CreateFixture(fixDef);
+        testmodule.SetLinearDamping(.7); // Damping works like friction or anti-force: reduces linear velocity.
+
+        var bodyDef3 = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
+        bodyDef3.type = b2Body.b2_dynamicBody; //define object type
+        if(pos.b2Vec2 && pos.angle) {
+            bodyDef3.position.Set(pos.b2Vec2.x - 1.5, pos.b2Vec2.y); // Define position in meters.
+            bodyDef3.angle = pos.angle; // define rotation in radians.
+        }
+        bodyDef3.angularDamping = bodyDef.angularDamping;
+
+        var testmodule2 = b2world.CreateBody(bodyDef3);
+        testmodule2.CreateFixture(fixDef);
+        testmodule2.SetLinearDamping(.7); // Damping works like friction or anti-force: reduces linear velocity.
+
+        var weldJointDef = new b2WeldJointDef();
+        weldJointDef.Initialize(ship, testmodule, ship.GetWorldCenter());
+        b2world.CreateJoint(weldJointDef);
+
+        var weldJointDef2 = new b2WeldJointDef();
+        weldJointDef2.Initialize(ship, testmodule2, ship.GetWorldCenter());
+        b2world.CreateJoint(weldJointDef2);
 
         //ship.userData = {'graphic': graphic, 'owner': username, 'type': 'ship'}; // bind ship graphic to physics body
         //aimationObjects.push(ship);
@@ -341,7 +382,7 @@
     //
     // state update and user input handling:
     function gameLoop() {
-        /*
+
         b2world.Step(
             1 / fps   //frame-rate
             ,  10       //velocity iterations
@@ -349,7 +390,7 @@
         );
         b2world.DrawDebugData();
         b2world.ClearForces();
-
+         /*
         //Draw the bodies
         if(b2world.GetBodyCount() > 1){
             window.requestAnimationFrame(function(){
@@ -389,13 +430,15 @@
             if(keys[65] === true){
                 // a
                 socket.emit('rotate left');
-                rotate(playerAvatar, -20);
+                rotate(playerAvatar, -100);
+                //rotate(playerAvatar, -20);
             }
 
             if(keys[68] === true){
                 // d
                 socket.emit('rotate right');
-                rotate(playerAvatar, 20);
+                //rotate(playerAvatar, 20);
+                rotate(playerAvatar, 100);
             }
 
             if(keys[83] === true){
