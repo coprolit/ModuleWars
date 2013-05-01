@@ -123,6 +123,7 @@ function start(route, handle) {
         client.on('canvas ready', function () {
             // client is ready to draw game state updates
             // inform client of other ships:
+            //
             for(var i = 0; i < gameObjectsModel.items.length; i++){
                 var package = {
                     'username': gameObjectsModel.items[i].username,
