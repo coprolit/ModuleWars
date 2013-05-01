@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <script src="Box2dWeb-2.1.a.3.min.js"></script>
+    <script src="raphael-min.js"></script>
+    <!--<script src="http://spaceacearena.eu01.aws.af.cm/socket.io/socket.io.js"></script>-->
+    <!--<script src="http://philippesimpson.helloworld.jit.su/socket.io/socket.io.js"></script>-->
+    <script src="socket.io/socket.io.js"></script>
+    <script>
+        // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+        // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+
+        // requestAnimationFrame polyfill by Erik Möller
+        // fixes from Paul Irish and Tino Zijdel
+
+        (function() {
+            var lastTime = 0;
+            var vendors = ['ms', 'moz', 'webkit', 'o'];
+            for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+                window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                        || window[vendors[x]+'CancelRequestAnimationFrame'];
+            }
+
+            if (!window.requestAnimationFrame)
+                window.requestAnimationFrame = function(callback, element) {
+                    var currTime = new Date().getTime();
+                    var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                    var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                            timeToCall);
+                    lastTime = currTime + timeToCall;
+                    return id;
+                };
+
+            if (!window.cancelAnimationFrame)
+                window.cancelAnimationFrame = function(id) {
+                    clearTimeout(id);
+                };
+        }());
+    </script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+<div style="position: absolute; top: 0; z-index: 999;">
+    <input id="usernameInput" type="text" value="Ship name">
+    <input id="connectBtn" type="button" value="Launch">
+</div>
+<div id="ping" style="position: absolute; top: 0; left:300px"></div>
+<!--<div id="cyclespeed" style="position: absolute; top: 0; left:400px">cyclespeed</div>-->
+<canvas id="canvas" width="1200" height="700"></canvas>
+<script src="gameengine5.js"></script>
+</body>
+</html>
