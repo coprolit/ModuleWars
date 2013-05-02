@@ -36,26 +36,16 @@
         //window.setInterval(gameLoop, 1000 / fps); // starting game loop
         setTimeout(gameLoop, 1000/fps);
 
-        socket.emit('canvas ready');
-        //setInterval(requestGameState, 1000 / fps);
+        // Socket is on and connected.
+        // Chat is on.
+        // Canvas is on.
+        // Game loop is on
+        // Client is ready for game state updates:
+        socket.emit('client ready');
     }
 
-    window.onload = function() {
-        // set up log in
-        var usernameInput = document.getElementById("usernameInput");
-        var connectBtn = document.getElementById("connectBtn");
-        connectBtn.onclick = function(){
-            username = document.getElementById("usernameInput").value;
-            connectBtn.style.display = "none";
-            usernameInput.style.display = "none";
-
-            socket.emit('ship launch', username);
-        };
-
-        initSocket();
-    };
-
 /* -- PHYSICS SIMULATION: -- */
+/*
     // Shorthand references to Box2D namespaces:
     var b2Vec2 = Box2D.Common.Math.b2Vec2;
     var b2BodyDef = Box2D.Dynamics.b2BodyDef;
@@ -81,10 +71,29 @@
     debugDraw.SetLineThickness(1.0);
     debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
     b2world.SetDebugDraw(debugDraw);
-    //
-
+    // Debug draw END
+*/
 /* -- SOCKET: -- */
     // Real-time client-server communication:
+    window.onload = function() {
+        // set up log in
+        var usernameInput = document.getElementById("usernameInput");
+        var connectBtn = document.getElementById("connectBtn");
+        connectBtn.onclick = function(){
+            username = document.getElementById("usernameInput").value;
+            connectBtn.style.display = "none";
+            usernameInput.style.display = "none";
+
+            var package = {
+                'username': username
+            };
+            socket.emit('module launch', package);
+            //socket.emit('ship launch', username);
+        };
+
+        initSocket();
+    };
+
     function initSocket(){
         //socket = io.connect('http://spaceacearena.eu01.aws.af.cm/');
         //socket = io.connect('http://philippesimpson.helloworld.nodejitsu.com/');
@@ -99,18 +108,20 @@
             initCanvas(); // creates canvas & avatar
         });
 
-        socket.on('ship launched', function(data){
-            //console.log("ship launched: " + data.username);
+        socket.on('module launched', function(data){
+            console.log("module launched: " + data.username);
             if(data.username === username){
                 // you successfully launched a ship
                 // create player avatar:
-                playerAvatar = createShip({'b2Vec2': data.b2Vec2, 'angle': data.angle}, data.density, data.username);
+                //playerAvatar = createShip({'b2Vec2': data.b2Vec2, 'angle': data.angle}, data.density, data.username);
+                playerAvatar = createModule({'b2Vec2': data.b2Vec2, 'angle': data.angle}, data.density, data.username);
                 gameObjectsModel[data.username] = {};
                 gameObjectsModel[data.username] = playerAvatar;
                 postInChat('<strong>' + data.username + '</strong>, you are spaceborne.');
             } else {
                 // some other client launched a ship
-                var newShip = createShip({'b2Vec2': data.b2Vec2, 'angle': data.angle}, data.density, data.username);
+                //var newShip = createShip({'b2Vec2': data.b2Vec2, 'angle': data.angle}, data.density, data.username);
+                var newShip = createModule({'b2Vec2': data.b2Vec2, 'angle': data.angle}, data.density, data.username);
                 gameObjectsModel[data.username] = {};
                 gameObjectsModel[data.username] = newShip;
                 postInChat('<strong>' + data.username + '</strong> entered space.');
@@ -124,7 +135,7 @@
             pingEl.innerHTML = "Frekvens: " + (now - prev) + "ms";
             prev = now;
             if(paper){
-                // let's synchronize with server:
+                // let's synchronize game state from server data:
                 window.requestAnimationFrame(function(){
                     var items = data.split(",");
                     for(var i = 0; i < items.length; i++){
@@ -132,36 +143,30 @@
                         var username = item[0];
 
                         if(gameObjectsModel[username]){
-                            // update physics:
+                            // update graphics:
+                            var graphic = gameObjectsModel[username];
+
                             var posX = parseFloat(item[1]);
                             var posY = parseFloat(item[2]);
                             var angle = parseFloat(item[3]);
-                            var velX = parseFloat(item[4]);
-                            var velY = parseFloat(item[5]);
-                            //gameObjectsModel[username].SetPosition(new b2Vec2(posX, posY));
-                            //gameObjectsModel[username].SetAngle(angle);
-                            //gameObjectsModel[username].SetLinearVelocity(new b2Vec2(velX, velY));
-                            // update graphics:
-                            var graphic = gameObjectsModel[username].GetUserData().graphic;
-                            //var graphic = gameObjectsModel[username].ship.userData.graphic;
                             var newX = posX * scale;
                             var newY = posY * scale;
                             var newR = angle * 180 / Math.PI + 90;
-                            /*
-                            if(gameObjectsModel[username].GetUserData().type === 'ship'){
+
+                            if(gameObjectsModel[username].data('type') === 'module'){
                                 graphic.attr({
-                                    x: newX - graphic.attr('width')/2,
-                                    y: newY - graphic.attr('height')/2
+                                    x: newX /*- graphic.attr('width')/2*/,
+                                    y: newY /*- graphic.attr('height')/2*/
                                 });
                             }
-                            if(gameObjectsModel[username].GetUserData().type === 'bullet'){
+                            if(gameObjectsModel[username].data('type') === 'bullet'){
+                                console.log("updating bullet");
                                 graphic.attr({
                                     cx: newX,
                                     cy: newY
                                 });
                             }
                             graphic.transform("R" + newR);
-                            */
                         }
 
                     }
@@ -175,8 +180,9 @@
                 // you died
                 console.log("you died");
             }
-            gameObjectsModel[name].GetUserData().graphic.remove(); // remove graphic
-            b2world.DestroyBody(gameObjectsModel[name]); // remove physics object
+            //gameObjectsModel[name].GetUserData().graphic.remove(); // remove graphic
+            gameObjectsModel[name].remove(); // remove graphic
+            //b2world.DestroyBody(gameObjectsModel[name]); // remove physics object
             delete gameObjectsModel[name]; // remove reference
             postInChat('<strong>' + name + '</strong> is no more.');
         });
@@ -193,27 +199,28 @@
             gameObjectsModel[data.username] = {};
             gameObjectsModel[data.username] = newShot;
         });
-        /*
-        socket.on('updatecycle', function(time){
-            cycleEl.innerHTML = "cyclespeed: " + time + "ms";
-        })
-        socket.on('pingback', function(time){
-            //console.log(time);
-            var now = new Date().getTime();
-            pingEl.innerHTML = "ping: " + (now - time) + "ms";
-            //console.log("ping: " + (now - time) + "ms");
-        });
-
-        function ping(){
-            var timestamp = new Date().getTime();
-            socket.emit('ping', timestamp);
-        }
-        setInterval(ping, 5000);
-        */
     }
     //
 
 /* -- GAME OBJECTS FACTORY: -- */
+    function createModule(pos, density, username){
+        //console.log('creating module for ' + username);
+        var graphic = paper.rect(pos.b2Vec2.x * scale, pos.b2Vec2.y * scale, 30, 30)
+            .attr({fill: "#CCC"})
+            .transform("R" + pos.angle * 180 / Math.PI)
+            .data({'owner': username, 'type': 'module', 'lastServerState': { 'x': pos.b2Vec2.x, 'y': pos.b2Vec2.y, 'angle': pos.angle, 'vx': 0, 'vy': 0 }});
+        return graphic;
+    }
+
+    function createBullet(data){
+        //console.log('creating module for ' + username);
+        var graphic = paper.circle(data.b2Vec2.x * scale, data.b2Vec2.y * scale, 3)
+            .attr({fill: "#000"})
+            .transform("R" + data.angle * 180 / Math.PI)
+            .data({'type': 'bullet'});
+        return graphic;
+    }
+    /*
     function createShip(pos, density, username){
         //console.log('creating ship for ' + username);
         //var graphic = paper.image("ship01.png", pos.b2Vec2.x * scale - 14, pos.b2Vec2.y * scale - 21, 28, 42);
@@ -223,10 +230,7 @@
         // 'Mass' = Shape size * density value
         var bodyDef = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
         bodyDef.type = b2Body.b2_dynamicBody; //define object type
-        /*if(pos.x && pos.y && pos.r){
-            bodyDef.position.Set(pos.x / scale, pos.y / scale); // Define position in meters.
-            bodyDef.angle = pos.r * Math.PI / 180; // define rotation in radians.
-        } else*/ if(pos.b2Vec2 && pos.angle) {
+        if(pos.b2Vec2 && pos.angle) {
             bodyDef.position.Set(pos.b2Vec2.x, pos.b2Vec2.y); // Define position in meters.
             bodyDef.angle = pos.angle; // define rotation in radians.
         }
@@ -284,6 +288,8 @@
         //aimationObjects.push(ship);
         return ship;
     }
+    */
+    /*
     function createBullet(data){
         var bodyDef = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
         bodyDef.type = b2Body.b2_dynamicBody; //define object type
@@ -320,6 +326,7 @@
 
         return shot;
     }
+    */
     /*function shoot(shootingBody){
         var bodyDef = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
         bodyDef.type = b2Body.b2_dynamicBody; //define object type
@@ -382,45 +389,15 @@
     //
     // state update and user input handling:
     function gameLoop() {
-
+        /*
         b2world.Step(
             1 / fps   //frame-rate
             ,  10       //velocity iterations
             ,  10       //position iterations - The quality of the simulation
         );
-        b2world.DrawDebugData();
-        b2world.ClearForces();
-         /*
-        //Draw the bodies
-        if(b2world.GetBodyCount() > 1){
-            window.requestAnimationFrame(function(){
-                for(var body = b2world.GetBodyList(); body; body = body.GetNext()){
-                    if (body.IsActive() && typeof body.GetUserData() !== 'undefined' && body.GetUserData() !== null) {
-                        // update graphics:
-                        var type = body.GetUserData().type;
-                        var graphic = body.GetUserData().graphic;
-                        var newX = body.GetPosition().x * scale;
-                        var newY = body.GetPosition().y * scale;
-                        var newR = body.GetAngle() * 180 / Math.PI + 90;
-
-                        if(type === 'bullet'){
-                            graphic.attr({
-                                cx: newX,
-                                cy: newY
-                            });
-                        }
-                        if(type === 'ship'){
-                            graphic.attr({
-                                x: newX - graphic.attr('width')/2,
-                                y: newY - graphic.attr('height')/2
-                            });
-                        }
-                        graphic.transform("R" + newR);
-                    }
-                }
-            });
-        }
         */
+        //b2world.DrawDebugData();
+        //b2world.ClearForces();
 
         if(playerAvatar !== undefined){
             if(keys[66] === true){
@@ -430,7 +407,7 @@
             if(keys[65] === true){
                 // a
                 socket.emit('rotate left');
-                rotate(playerAvatar, -100);
+                //rotate(playerAvatar, -100);
                 //rotate(playerAvatar, -20);
             }
 
@@ -438,19 +415,19 @@
                 // d
                 socket.emit('rotate right');
                 //rotate(playerAvatar, 20);
-                rotate(playerAvatar, 100);
+                //rotate(playerAvatar, 100);
             }
 
             if(keys[83] === true){
                 // s : thrust down
                 socket.emit('thrust down');
-                push(playerAvatar, -100);
+                //push(playerAvatar, -100);
             }
 
             if(keys[87] === true){
                 // w : thrust up
                 socket.emit('thrust up');
-                push(playerAvatar, 150);
+                //push(playerAvatar, 150);
             }
 
             if(keys[32] === true){
@@ -468,7 +445,7 @@
 
         setTimeout(gameLoop, 1000/fps);
     }
-
+    /*
     // Force manipulation handling:
     function push(obj, power) {
         // calculating force vector:
@@ -482,3 +459,4 @@
     function rotate(obj, r) {
         obj.ApplyTorque(r); // Apply a torque = adds angular 'kinetic' energy.
     }
+    */

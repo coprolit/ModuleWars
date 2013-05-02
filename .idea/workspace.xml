@@ -3,18 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="e186cfc2-c22f-45c1-a705-e57b2a63d9b6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gameengine5.js" afterPath="$PROJECT_DIR$/gameengine5.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/nodehelloworld.iml" afterPath="$PROJECT_DIR$/.idea/nodehelloworld.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.js" afterPath="$PROJECT_DIR$/server.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="nodehelloworld.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="e186cfc2-c22f-45c1-a705-e57b2a63d9b6" time="1367401825500" ignored="false" />
-    <file path="/gameengine5.js" changelist="e186cfc2-c22f-45c1-a705-e57b2a63d9b6" time="1367411952289" ignored="false" />
+    <file path="/Dummy.txt" changelist="e186cfc2-c22f-45c1-a705-e57b2a63d9b6" time="1367479213167" ignored="false" />
+    <file path="/gameengine5.js" changelist="e186cfc2-c22f-45c1-a705-e57b2a63d9b6" time="1367490126274" ignored="false" />
     <file path="/a.js" changelist="e186cfc2-c22f-45c1-a705-e57b2a63d9b6" time="1367416050575" ignored="false" />
-    <file path="/server.js" changelist="e186cfc2-c22f-45c1-a705-e57b2a63d9b6" time="1367417871943" ignored="false" />
+    <file path="/server.js" changelist="e186cfc2-c22f-45c1-a705-e57b2a63d9b6" time="1367486610889" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +34,7 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="39" selection-start="355" selection-end="377" vertical-scroll-proportion="-2.6153846">
+            <state line="8" column="39" selection-start="355" selection-end="377" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -46,37 +43,33 @@
       <file leaf-file-name="gameengine5.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gameengine5.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="47" selection-start="853" selection-end="853" vertical-scroll-proportion="-14.28">
+            <state line="216" column="37" selection-start="8924" selection-end="8924" vertical-scroll-proportion="-48.28">
               <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="e#3527#3615#0" expanded="false" />
-                <element signature="e#3658#3769#0" expanded="false" />
-                <element signature="e#3822#4762#0" expanded="false" />
-                <element signature="e#8240#8795#0" expanded="false" />
-                <element signature="n#!!block;n#createBullet#0" expanded="false" />
-                <element signature="e#15375#18068#0" expanded="false" />
+                <element signature="e#3792#3880#0" expanded="false" />
+                <element signature="e#3923#4034#0" expanded="false" />
+                <element signature="e#4089#5272#0" expanded="false" />
+                <element signature="e#9135#13383#0" expanded="false" />
+                <element signature="e#15466#18159#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="server.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="server.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="245" column="57" selection-start="9865" selection-end="9865" vertical-scroll-proportion="0.0">
+            <state line="335" column="18" selection-start="14177" selection-end="14177" vertical-scroll-proportion="0.030195381">
               <folding>
-                <element signature="n#!!block;n#sendGameState#0;n#!!block;n#start#0" expanded="false" />
-                <element signature="e#3819#8554#0" expanded="false" />
-                <element signature="e#10341#11614#0" expanded="false" />
+                <element signature="e#3935#5108#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="2" selection-start="704" selection-end="704" vertical-scroll-proportion="0.28380635">
+            <state line="21" column="18" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -121,11 +114,11 @@
         <option value="$PROJECT_DIR$/server/requestHandlers.js" />
         <option value="$PROJECT_DIR$/requestHandlers.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/gameengine5.js" />
-        <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/Box2dWeb-2.1.a.3.min.js" />
         <option value="$PROJECT_DIR$/node_modules/box2dweb-commonjs/Box2dWeb-2.1.a.3.js" />
         <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/gameengine5.js" />
+        <option value="$PROJECT_DIR$/server.js" />
       </list>
     </option>
   </component>
@@ -189,6 +182,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nodehelloworld" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ModuleWars" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="node_modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -196,15 +203,15 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="settings.nodejs" />
-    <property name="recentsLimit" value="5" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="settings.nodejs" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -290,7 +297,15 @@
       <created>1367401833747</created>
       <updated>1367401833747</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="whatever">
+      <created>1367418631752</created>
+      <updated>1367418631752</updated>
+    </task>
+    <task id="LOCAL-00004" summary="whatever">
+      <created>1367419057669</created>
+      <updated>1367419057669</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -315,13 +330,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="66" y="-8" width="1308" height="784" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852563" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1710008" sideWeight="0.6704" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18676123" sideWeight="0.6704" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28365386" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -331,6 +345,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852563" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -410,13 +425,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="150" column="70" selection-start="6659" selection-end="6659" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#3527#3615#0" expanded="false" />
-            <element signature="e#3658#3769#0" expanded="false" />
-            <element signature="e#3822#4762#0" expanded="false" />
-            <element signature="e#8240#8795#0" expanded="false" />
-            <element signature="n#!!block;n#createBullet#0" expanded="false" />
-            <element signature="e#15375#18068#0" expanded="false" />
+            <element signature="e#3792#3880#0" expanded="false" />
+            <element signature="e#3923#4034#0" expanded="false" />
+            <element signature="e#4089#5272#0" expanded="false" />
+            <element signature="e#9135#13383#0" expanded="false" />
+            <element signature="e#15466#18159#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -425,9 +438,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="127" column="47" selection-start="5226" selection-end="5226" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="n#!!block;n#sendGameState#0;n#!!block;n#start#0" expanded="false" />
-            <element signature="e#3819#8554#0" expanded="false" />
-            <element signature="e#10341#11614#0" expanded="false" />
+            <element signature="e#3935#5108#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -484,41 +495,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="7828" column="23" selection-start="302503" selection-end="302520" vertical-scroll-proportion="-91.666664">
           <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gameengine5.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="47" selection-start="853" selection-end="853" vertical-scroll-proportion="-14.28">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#3527#3615#0" expanded="false" />
-            <element signature="e#3658#3769#0" expanded="false" />
-            <element signature="e#3822#4762#0" expanded="false" />
-            <element signature="e#8240#8795#0" expanded="false" />
-            <element signature="n#!!block;n#createBullet#0" expanded="false" />
-            <element signature="e#15375#18068#0" expanded="false" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="39" selection-start="355" selection-end="377" vertical-scroll-proportion="-2.6153846">
+        <state line="8" column="39" selection-start="355" selection-end="377" vertical-scroll-proportion="0.0">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="245" column="57" selection-start="9865" selection-end="9865" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="n#!!block;n#sendGameState#0;n#!!block;n#start#0" expanded="false" />
-            <element signature="e#3819#8554#0" expanded="false" />
-            <element signature="e#10341#11614#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -531,8 +516,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="2" selection-start="704" selection-end="704" vertical-scroll-proportion="0.28380635">
+        <state line="21" column="18" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gameengine5.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="216" column="37" selection-start="8924" selection-end="8924" vertical-scroll-proportion="-48.28">
+          <folding>
+            <element signature="e#3792#3880#0" expanded="false" />
+            <element signature="e#3923#4034#0" expanded="false" />
+            <element signature="e#4089#5272#0" expanded="false" />
+            <element signature="e#9135#13383#0" expanded="false" />
+            <element signature="e#15466#18159#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="335" column="18" selection-start="14177" selection-end="14177" vertical-scroll-proportion="0.030195381">
+          <folding>
+            <element signature="e#3935#5108#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

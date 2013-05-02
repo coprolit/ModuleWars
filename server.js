@@ -123,7 +123,7 @@ function start(route, handle) {
 
         });
 
-        client.on('canvas ready', function () {
+        client.on('client ready', function () {
             // client is ready to draw game state updates
             // inform client of other ships:
             //
@@ -134,31 +134,31 @@ function start(route, handle) {
                     'b2Vec2' : gameObjectsModel.items[i].obj.GetPosition(),
                     'angle' : gameObjectsModel.items[i].obj.GetAngle()
                 };
-                client.emit('ship launched', package); // new client creates avatars for the other clients
+                client.emit('module launched', package); // new client creates avatars for the other clients
             }
         });
 
-        client.on('ship launch', function(username){
+        client.on('module launch', function(_data){
             var data = {};
-            data.username = username;
+            data.username = _data.username;
             // create ship:
             var initX = Math.round(Math.random() * paperW);
             var initY = Math.round(Math.random() * paperH);
             var initR = 1; //Math.round(Math.random() * 360);
             var density = 50;
-            data.obj = createShip({'x': initX, 'y':initY, 'r': initR}, density, username);
+            data.obj = createShip({'x': initX, 'y':initY, 'r': initR}, density, data.username);
             gameObjectsModel.items.push(data); // store reference to ship
 
             client.set('ship', data.obj); // ship object stored on client. Used .on('shoot', ...)
-            client.set('username', username); // ship name stored on client
+            client.set('username', data.username); // ship name stored on client
 
             var package = {
-                'username': username,
+                'username': data.username,
                 'b2Vec2' : data.obj.GetPosition(),
                 'angle' : data.obj.GetAngle(),
                 'density': density
             };
-            io.sockets.emit('ship launched', package); // request all connected clients to create a ship avatar for the new ship
+            io.sockets.emit('module launched', package); // request all connected clients to create a ship avatar for the new ship
         });
 
         client.on('thrust up', function(){
