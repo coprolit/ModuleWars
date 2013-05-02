@@ -109,12 +109,11 @@
         });
 
         socket.on('module launched', function(data){
-            console.log("module launched: " + data.username);
             if(data.username === username){
                 // you successfully launched a ship
                 // create player avatar:
                 //playerAvatar = createShip({'b2Vec2': data.b2Vec2, 'angle': data.angle}, data.density, data.username);
-                playerAvatar = createModule({'b2Vec2': data.b2Vec2, 'angle': data.angle}, data.density, data.username);
+                playerAvatar = createModule({'b2Vec2': data.b2Vec2, 'angle': data.angle, 'density': data.density, 'username': data.username});
                 gameObjectsModel[data.username] = {};
                 gameObjectsModel[data.username] = playerAvatar;
                 postInChat('<strong>' + data.username + '</strong>, you are spaceborne.');
@@ -160,7 +159,7 @@
                                 });
                             }
                             if(gameObjectsModel[username].data('type') === 'bullet'){
-                                console.log("updating bullet");
+                                //console.log("updating bullet");
                                 graphic.attr({
                                     cx: newX,
                                     cy: newY
@@ -174,7 +173,7 @@
             }
         });
 
-        socket.on('ship destroyed', function(name){
+        socket.on('object destroyed', function(name){
             // someone died.
             if(username === name){
                 // you died
@@ -203,12 +202,12 @@
     //
 
 /* -- GAME OBJECTS FACTORY: -- */
-    function createModule(pos, density, username){
+    function createModule(params){
         //console.log('creating module for ' + username);
-        var graphic = paper.rect(pos.b2Vec2.x * scale, pos.b2Vec2.y * scale, 30, 30)
+        var graphic = paper.rect(params.b2Vec2.x * scale, params.b2Vec2.y * scale, 30, 30)
             .attr({fill: "#CCC"})
-            .transform("R" + pos.angle * 180 / Math.PI)
-            .data({'owner': username, 'type': 'module', 'lastServerState': { 'x': pos.b2Vec2.x, 'y': pos.b2Vec2.y, 'angle': pos.angle, 'vx': 0, 'vy': 0 }});
+            .transform("R" + params.angle * 180 / Math.PI)
+            .data({'owner': params.username, 'type': 'module', 'lastServerState': { 'x': params.b2Vec2.x, 'y': params.b2Vec2.y, 'angle': params.angle, 'vx': 0, 'vy': 0 }});
         return graphic;
     }
 
@@ -460,3 +459,10 @@
         obj.ApplyTorque(r); // Apply a torque = adds angular 'kinetic' energy.
     }
     */
+    function moduleAdd(params){
+        var package = {
+            'gridX': params.gridX,
+            'gridY': params.gridY
+        };
+        socket.emit('module add', package);
+    }

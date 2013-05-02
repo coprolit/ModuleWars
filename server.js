@@ -102,7 +102,7 @@ function start(route, handle) {
             client.get('username', function (err, name) {
                 // client was registered with a username (ship)
                 //client.broadcast.emit('ship destroyed', name); // all other clients remove the ship of the disconnected client
-                io.sockets.emit('ship destroyed', name); // all other clients remove the ship of the disconnected client
+                io.sockets.emit('object destroyed', name); // all other clients remove the ship of the disconnected client
                 // check if reference to client is stored in game objects model:
                 var index = -1;
                 for(var i = 0; i < gameObjectsModel.items.length; i++){
@@ -139,12 +139,15 @@ function start(route, handle) {
         });
 
         client.on('module launch', function(_data){
+            // new central module
             var data = {};
             data.username = _data.username;
-            // create ship:
-            var initX = Math.round(Math.random() * paperW);
-            var initY = Math.round(Math.random() * paperH);
-            var initR = 1; //Math.round(Math.random() * 360);
+
+            var initX, initY, initR;
+            initX = Math.round(Math.random() * paperW);
+            initY = Math.round(Math.random() * paperH);
+            initR = 1; //Math.round(Math.random() * 360);
+            // create module:
             var density = 50;
             data.obj = createShip({'x': initX, 'y':initY, 'r': initR}, density, data.username);
             gameObjectsModel.items.push(data); // store reference to ship
@@ -159,6 +162,31 @@ function start(route, handle) {
                 'density': density
             };
             io.sockets.emit('module launched', package); // request all connected clients to create a ship avatar for the new ship
+        });
+
+        client.on('module add', function(_data){
+            client.get('ship', function (err, ship) {
+                client.get('username', function (err, name) {
+                    var package = {
+                        'username': name,
+                        "mainModule": ship,
+                        'gridX' : _data.gridX,
+                        'gridY' : _data.gridY
+                    };
+
+                    var data = {};
+                    data.username = name + _data.gridX + _data.gridY;
+                    data.obj = moduleExtend(package);
+                    gameObjectsModel.items.push(data); // store reference to ship
+
+                    var package2 = {
+                        'username': data.username,
+                        'b2Vec2' : data.obj.GetPosition(),
+                        'angle' : data.obj.GetAngle()
+                    };
+                    io.sockets.emit('module launched', package2); // request all connected clients to create a ship avatar for the new ship
+                });
+            });
         });
 
         client.on('thrust up', function(){
@@ -176,14 +204,14 @@ function start(route, handle) {
         client.on('rotate left', function(){
             client.get('ship', function (err, ship) {
                 //rotate(ship, -20);
-                rotate(ship, -100);
+                rotate(ship, -50);
             });
         });
 
         client.on('rotate right', function(){
             client.get('ship', function (err, ship) {
                 //rotate(ship, 20);
-                rotate(ship, 100);
+                rotate(ship, 50);
             });
         });
 
@@ -214,25 +242,12 @@ function start(route, handle) {
 
     /* -- PHYSICS SIMULATION: -- */
     // Shorthand references to Box2D namespaces:
-    /*
-    var b2Vec2 = Box2D.Common.Math.b2Vec2;
-    var b2BodyDef = Box2D.Dynamics.b2BodyDef;
-    var b2Body = Box2D.Dynamics.b2Body;
-    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
-    var b2Fixture = Box2D.Dynamics.b2Fixture;
-    var b2World = Box2D.Dynamics.b2World;
-    var b2MassData = Box2D.Collision.Shapes.b2MassData;
-    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
-    var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
-    */
     var b2Vec2 = Box2D.b2Vec2;
     var b2BodyDef = Box2D.b2BodyDef;
     var b2Body = Box2D.b2Body;
     var b2FixtureDef = Box2D.b2FixtureDef;
-    var b2Fixture = Box2D.b2Fixture;
+    var b2WeldJointDef = Box2D.b2WeldJointDef;
     var b2World = Box2D.b2World;
-    var b2MassData = Box2D.b2MassData;
-    var b2PolygonShape = Box2D.b2PolygonShape;
     var b2CircleShape = Box2D.b2CircleShape;
     var b2ContactListener = Box2D.b2ContactListener;
     //
@@ -329,6 +344,39 @@ function start(route, handle) {
         return ship;
     }
 
+    function moduleExtend(params){
+        // params: 'username', 'mainModule', 'gridX', 'gridY'
+        // 'Mass' = Shape size * density value
+        var cBodyPos = params.mainModule.GetPosition();
+        var cBodyAngle = params.mainModule.GetAngle();
+
+        var bodyDef = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
+        bodyDef.type = b2Body.b2_dynamicBody; //define object type
+        bodyDef.position.Set(cBodyPos.x + params.gridX * 1.5, cBodyPos.y + params.gridY * 1.5); // Define position in meters.
+        bodyDef.angle = cBodyAngle; // define rotation in radians.
+        bodyDef.angularDamping = 1; // Angular damping is used to reduce the angular velocity. Works like friction or anti-force.
+        //bodyDef.position.Set(10, 10); // define position
+        bodyDef.userData = {'owner': params.username + params.gridX + params.gridY, 'type': 'ship'}; // bind ship graphic to physics body
+
+        var fixDef = new b2FixtureDef; // A fixture binds a shape to a body and adds material properties such as density, friction, and restitution.
+        fixDef.density = 50;//params.density; // The density. Usually kg/m^2.
+        //fixDef.density = 10.0;
+        fixDef.friction = 0; // The friction coefficient, usually in the range [0,1]. Doesn't seem to have any impact?
+        fixDef.restitution = 0.1; // Restitution is used to make objects bounce. The restitution value is usually set to be between 0 and 1.
+        fixDef.shape = new b2CircleShape(.6); // The 'hitarea' shape - circle or polygon. Defines the size (in meters).
+
+        var module = b2world.CreateBody(bodyDef);
+        module.CreateFixture(fixDef);
+        //module.CreateFixture(params.mainModule.GetFixtureList().GetNext());
+        module.SetLinearDamping(.7); // Damping works like friction or anti-force: reduces linear velocity.
+
+        var weldJointDef = new b2WeldJointDef();
+        weldJointDef.Initialize(params.mainModule, module, params.mainModule.GetWorldCenter());
+        b2world.CreateJoint(weldJointDef);
+
+        return module;
+    }
+
     function shoot(shootingBody){
         var bodyDef = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
         bodyDef.type = b2Body.b2_dynamicBody; //define object type
@@ -374,6 +422,7 @@ function start(route, handle) {
                 gameObjectsModel.items.remove(index); // Remove stored reference
             }
             //delete gameObjectsModel[shootingBody.GetUserData().owner].shot; // remove reference
+            io.sockets.emit('object destroyed', shootingBody.GetUserData().owner + "_bullet");
         }
         bulletSelfDestructTimeout = setTimeout(selfdestruct, 1500);
 
