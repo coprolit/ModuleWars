@@ -26,8 +26,6 @@ init();
 
 function init(){
 	
-
-
 	module = paper.circle(200, 200, shipsize);
 	module.attr("fill", "#BADA55");
 
@@ -41,7 +39,7 @@ function init(){
 	mothermodule.boxH = mothermodule.parentY * 2;
 
 	module.dblclick(function(e){
-
+    console.log(module, e)
     draw_grid(module.getBBox(true).x, module.getBBox(true).y);
   });
 
@@ -51,23 +49,10 @@ function init(){
 
   },
   move = function (dx, dy) {
-
     this.attr({cx: this.ox + dx, cy: this.oy + dy});
   };
   paper.set(module).drag(move, start);
 
-
-}
-
-// return current ship position
-function modPos(){
-  var o = {
-
-    x: Math.round(module.getBBox(true).x),
-    y: Math.round(module.getBBox(true).y)
-  }
-
-  return o;
 }
 
 function draw_grid(modx, mody) { 
@@ -92,24 +77,27 @@ function draw_grid(modx, mody) {
           paper.rect(x, y, gd, gd).attr({fill: '#333', opacity: 0.4}).click(function (event) {
               var newmod = this;
 
-              var modulecoord = {
-                   id: newmod.id,
-                   x: newmod.attrs.x - gd,
-                   y: newmod.attrs.y - gd
-              };
 
+              console.log(holder)
               if(newmod.x === undefined){
+
 
                 newmod.attr({fill:'#666'});
                 //paper.circle((newmod.attrs.x + modPos().x) - shipsize, (newmod.attrs.y + modPos().y) - shipsize, shipsize).attr( {fill: "hsb(0, 1, 1)", stroke: "none", opacity: .5} );
-                paper.circle(modulecoord.x, modulecoord.y, shipsize).attr( {fill: "hsb(0, 1, 1)", stroke: "none", opacity: .5} ).translate(modPos().x+shipsize,modPos().y+shipsize);
+                paper.circle( holdergrid.ox, holdergrid.oy, shipsize).attr( {fill: "hsb(0, 1, 1)", stroke: "none", opacity: .5} );
 
                 // return position of added module
 
                 // *quickfix* of getting position relative to the main module: newmod x pos - gridsize
                 //console.log("New module added at X", newmod.attrs.x - gd, " Y", newmod.attrs.y - gd);
-
+                var modulecoord = {
+                   id: newmod.id,
+                   x: newmod.attrs.x - gd,
+                   y: newmod.attrs.y - gd
+                };
                 console.log(modulecoord);
+
+
 
               } else {
                 // remove
@@ -126,7 +114,6 @@ function draw_grid(modx, mody) {
       holdergrid.push( circles[j] );
     }
 
-
     // translate boundingbox - gridsize
     // eg. position grid in center of main module
     // use transform
@@ -141,3 +128,18 @@ function draw_grid(modx, mody) {
   //console.log('draw_grid(), gridface: ', gridface);
   // return module pos
 } 
+
+function modPos(){
+  // return current ship position
+  var o = {
+
+    x: Math.round(module.getBBox(true).x),
+    y: Math.round(module.getBBox(true).y)
+/*
+    x: Math.round(module.ox),
+    y: Math.round(module.oy)
+    */
+  }
+
+  return o;
+}
