@@ -1,12 +1,6 @@
 var http = require("http");
 var url = require("url");
-var fs = require("fs");
-//var Box2D = require("./Box2dWeb-2.1.a.3.min.js");
 var io = require("socket.io");
-
-//eval(fs.readFileSync("Box2dWeb-2.1.a.3.min.js") + '');
-//fs.readFileSync("Box2dWeb-2.1.a.3.min.js", "UTF-8");
-//var Box2D = require("./Box2dWeb-2.1.a.3.min.js");
 var Box2D = require('box2dweb-commonjs');
 
 // Array Remove - By John Resig (MIT Licensed)
@@ -146,7 +140,7 @@ function start(route, handle) {
             var initX, initY, initR;
             initX = Math.round(Math.random() * paperW);
             initY = Math.round(Math.random() * paperH);
-            initR = 1; //Math.round(Math.random() * 360);
+            initR = -90;//Math.round(Math.random() * 360);
             // create module:
             var density = 50;
             data.obj = createShip({'x': initX, 'y':initY, 'r': initR}, density, data.username);
@@ -350,6 +344,8 @@ function start(route, handle) {
         var cBodyPos = params.mainModule.GetPosition();
         var cBodyAngle = params.mainModule.GetAngle();
 
+        params.mainModule.SetAngle(-90 * Math.PI / 180); // This is cheating. To avoid calculating the position of new module in relation to main module's angle
+
         var bodyDef = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
         bodyDef.type = b2Body.b2_dynamicBody; //define object type
         bodyDef.position.Set(cBodyPos.x + params.gridX * 1.5, cBodyPos.y + params.gridY * 1.5); // Define position in meters.
@@ -373,6 +369,8 @@ function start(route, handle) {
         var weldJointDef = new b2WeldJointDef();
         weldJointDef.Initialize(params.mainModule, module, params.mainModule.GetWorldCenter());
         b2world.CreateJoint(weldJointDef);
+
+        params.mainModule.SetAngle(cBodyAngle);
 
         return module;
     }

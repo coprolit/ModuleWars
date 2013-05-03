@@ -204,6 +204,10 @@
 /* -- GAME OBJECTS FACTORY: -- */
     function createModule(params){
         //console.log('creating module for ' + username);
+        //var centerX = params.b2Vec2.x * scale;
+        //var centerY = params.b2Vec2.y * scale;
+        //var path = "M" + (centerX - 25) + "," + (centerY - 25) + "L" + (centerX + 25) + "," + (centerY - 25) + "L" + centerX + "," + (centerY + 25) + "Z";
+        //var graphic = paper.path(path)
         var graphic = paper.rect(params.b2Vec2.x * scale, params.b2Vec2.y * scale, 30, 30)
             .attr({fill: "#CCC"})
             .transform("R" + params.angle * 180 / Math.PI)
