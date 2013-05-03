@@ -94,22 +94,22 @@ function draw_grid(modx, mody) {
 
               var modulecoord = {
                    id: newmod.id,
-                   x: newmod.attrs.x - gd,
-                   y: newmod.attrs.y - gd
+                   gridX: newmod.attrs.x - gd,
+                   gridY: newmod.attrs.y - gd
               };
 
               if(newmod.x === undefined){
 
                 newmod.attr({fill:'#666'});
                 //paper.circle((newmod.attrs.x + modPos().x) - shipsize, (newmod.attrs.y + modPos().y) - shipsize, shipsize).attr( {fill: "hsb(0, 1, 1)", stroke: "none", opacity: .5} );
-                paper.circle(modulecoord.x, modulecoord.y, shipsize).attr( {fill: "hsb(0, 1, 1)", stroke: "none", opacity: .5} ).translate(modPos().x+shipsize,modPos().y+shipsize);
+                paper.circle(modulecoord.gridX, modulecoord.gridY, shipsize).attr( {fill: "hsb(0, 1, 1)", stroke: "none", opacity: .5} ).translate(modPos().x+shipsize,modPos().y+shipsize);
 
                 // return position of added module
 
                 // *quickfix* of getting position relative to the main module: newmod x pos - gridsize
                 //console.log("New module added at X", newmod.attrs.x - gd, " Y", newmod.attrs.y - gd);
 
-                console.log(modulecoord);
+                moduleAdd(modulecoord);
 
               } else {
                 // remove
