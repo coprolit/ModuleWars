@@ -33,7 +33,7 @@ function init(){
 
 	holder.push(module);
 
-  mothermodule.parentW = module.getBBox(true).cx;
+    mothermodule.parentW = module.getBBox(true).cx;
 	mothermodule.parentH = module.getBBox(true).cy;
 	mothermodule.parentX = module.getBBox(true).x;
 	mothermodule.parentY = module.getBBox(true).y;

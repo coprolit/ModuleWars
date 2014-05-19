@@ -163,22 +163,26 @@ function start(route, handle) {
                 client.get('username', function (err, name) {
                     var package = {
                         'username': name,
-                        "mainModule": ship,
-                        'gridX' : _data.gridX,
-                        'gridY' : _data.gridY
+                        'mainModule': ship,
+                        'gridX': _data.gridX,
+                        'gridY': _data.gridY
                     };
 
                     var data = {};
                     data.username = name + _data.gridX + _data.gridY;
                     data.obj = moduleExtend(package);
-                    gameObjectsModel.items.push(data); // store reference to ship
 
+                    // ny shape skal emittes til clienterne og tegnes!
+
+                    //gameObjectsModel.items.push(data); // store reference to ship
+                        /*
                     var package2 = {
                         'username': data.username,
                         'b2Vec2' : data.obj.GetPosition(),
                         'angle' : data.obj.GetAngle()
                     };
                     io.sockets.emit('module launched', package2); // request all connected clients to create a ship avatar for the new ship
+                    */
                 });
             });
         });
@@ -344,35 +348,41 @@ function start(route, handle) {
         var cBodyPos = params.mainModule.GetPosition();
         var cBodyAngle = params.mainModule.GetAngle();
 
-        params.mainModule.SetAngle(-90 * Math.PI / 180); // This is cheating. To avoid calculating the position of new module in relation to main module's angle
-
+        //params.mainModule.SetAngle(-90 * Math.PI / 180); // This is cheating. To avoid calculating the position of new module in relation to main module's angle
+        /*
         var bodyDef = new b2BodyDef; // Bodies have position and velocity. You can apply forces, torques, and impulses to bodies. Bodies can be static, kinematic, or dynamic.
         bodyDef.type = b2Body.b2_dynamicBody; //define object type
-        bodyDef.position.Set(cBodyPos.x + params.gridX * 1.5, cBodyPos.y + params.gridY * 1.5); // Define position in meters.
+        bodyDef.position.Set(cBodyPos.x + params.gridX * 1.2, cBodyPos.y + params.gridY * 1.2); // Define position in meters.
         bodyDef.angle = cBodyAngle; // define rotation in radians.
         bodyDef.angularDamping = 1; // Angular damping is used to reduce the angular velocity. Works like friction or anti-force.
         //bodyDef.position.Set(10, 10); // define position
         bodyDef.userData = {'owner': params.username + params.gridX + params.gridY, 'type': 'ship'}; // bind ship graphic to physics body
-
+        */
         var fixDef = new b2FixtureDef; // A fixture binds a shape to a body and adds material properties such as density, friction, and restitution.
         fixDef.density = 50;//params.density; // The density. Usually kg/m^2.
         //fixDef.density = 10.0;
         fixDef.friction = 0; // The friction coefficient, usually in the range [0,1]. Doesn't seem to have any impact?
         fixDef.restitution = 0.1; // Restitution is used to make objects bounce. The restitution value is usually set to be between 0 and 1.
         fixDef.shape = new b2CircleShape(.6); // The 'hitarea' shape - circle or polygon. Defines the size (in meters).
+        fixDef.shape.SetLocalPosition(new b2Vec2(params.gridX * 1.2, params.gridY * 1.2));
 
-        var module = b2world.CreateBody(bodyDef);
-        module.CreateFixture(fixDef);
+        //var module = b2world.CreateBody(bodyDef);
+        //var module = b2world.CreateBody(params.mainModule.GetDefinition());
+        var bodyDef = params.mainModule;
+        bodyDef.CreateFixture(fixDef); // attaching the new shape to main body
+        bodyDef.SetLinearDamping(.7); // Damping works like friction or anti-force: reduces linear velocity.
+        //module.CreateFixture(fixDef); // attaching the new shape to main body
         //module.CreateFixture(params.mainModule.GetFixtureList().GetNext());
-        module.SetLinearDamping(.7); // Damping works like friction or anti-force: reduces linear velocity.
-
+        //module.SetLinearDamping(.7); // Damping works like friction or anti-force: reduces linear velocity.
+        /*
+        // welding new module to main module
         var weldJointDef = new b2WeldJointDef();
         weldJointDef.Initialize(params.mainModule, module, params.mainModule.GetWorldCenter());
         b2world.CreateJoint(weldJointDef);
+          */
+        //params.mainModule.SetAngle(cBodyAngle);
 
-        params.mainModule.SetAngle(cBodyAngle);
-
-        return module;
+        //return module;
     }
 
     function shoot(shootingBody){
